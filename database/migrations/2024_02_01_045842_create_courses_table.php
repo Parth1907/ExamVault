@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('school_name');
             $table->string('course_name');
-            $table->integer('no_of_branches');
             $table->integer('no_of_semesters');
+        });
+
+        Schema::table('courses', function (Blueprint $table) {
+            $table->foreign('course_name')->references('course_name')->on('subjects')->onDelete('cascade');
         });
     }
 
@@ -25,6 +28,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('courses', function (Blueprint $table) {
+            $table->dropForeign(['course_name']);
+        });
         Schema::dropIfExists('courses');
     }
 };

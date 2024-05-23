@@ -7,12 +7,17 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        {{-- <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css"> --}}
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        {{-- <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script> --}}
+        {{-- @livewireStyles --}}
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -32,5 +37,6 @@
                 {{ $slot }}
             </main>
         </div>
+        {{-- @livewireScripts --}}
     </body>
 </html>

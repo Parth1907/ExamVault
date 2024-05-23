@@ -21,7 +21,7 @@ class NavigationController extends Controller
     }
     public function index()
     {
-        return view('navigation.school');
+        return view('home');
     }
     public function courses($school)
     {
@@ -153,18 +153,23 @@ class NavigationController extends Controller
         $request->validate([
             'examination_type' => 'required|in:mid-term,end-term',
             'year' => 'required|integer',
-            'paper' => 'required|file',
+            'paper' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
         $file = $request->file('paper');
-        $filename = $file->getClientOriginalName();
-        $request->file('paper')->move('assets', $filename);
-        Papers::create([
-            'subject' => $request->route('subject'),
-            'examination' => $request->input('examination_type'),
-            'year' => $request->input('year'),
-            'question_paper' => $filename,
-        ]);
-        return redirect()->route('show', [$school, $course, $branch, $semester, $subject])->with('message', 'Question paper uploaded successfully.');
+        if ($file->isValid()) {
+            $filename = $file->getClientOriginalName();
+            $request->file('paper')->move('assets', $filename);
+            Papers::create([
+                'subject' => $request->route('subject'),
+                'examination' => $request->input('examination_type'),
+                'year' => $request->input('year'),
+                'question_paper' => $filename,
+            ]);
+            return redirect()->route('show', [$school, $course, $branch, $semester, $subject])->with('message', 'Question paper uploaded successfully.');
+        } else {
+            return redirect()->back()->withErrors(['paper'=>'The uploaded file is not valid. Please try again.']);
+        }
+        
     }
 }

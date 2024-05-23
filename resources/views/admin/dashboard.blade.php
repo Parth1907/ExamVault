@@ -15,10 +15,10 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 dark:text-white overflow-hidden shadow-sm sm:rounded-lg flex items-center justify-center gap-4">
-                <a href="{{ route('admin.showSchoolForm')}}">Add School</a>
-                <a href="{{ route('admin.showCourseForm')}}">Add Course</a>
-                <a href="{{ route('admin.showBranchForm')}}">Add Branch</a>
-                <a href="{{ route('admin.showSubjectForm')}}">Add Subject</a>
+                <a href="{{ route('admin.showSchoolForm')}}">Manage School</a>
+                <a href="{{ route('admin.showCourseForm')}}">Manage Course</a>
+                <a href="{{ route('admin.showBranchForm')}}">Manage Branch</a>
+                <a href="{{ url('admin/manageSubject')}}">Manage Subject</a>
             </div>
         </div>
     </div>

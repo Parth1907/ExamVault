@@ -1,62 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
+<nav class="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>College Edu Cell</title>
-</head>
+        <div class="flex h-16 justify-between">
 
-<body>
-    <nav class="bg-white shadow-sm">
-        <div class="container mx-auto">
-            <button class="block navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="{{ __('Toggle navigation') }}">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse" id="navbarSupportedContent">
+            <div class="flex justify-center">
+                <!-- Logo -->
+                <div class="flex shrink-0 items-center">
+                <a href="{{ route('home') }}">
+                    <img src="{{ asset('assets/logow.png') }}" alt="Logow" class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200">
+                 </a>
+                </div>
 
-
-
-                {{-- Right Side Of Navbar --}}
-                <ul class="ml-auto flex gap-2"><!-- class="list-unstyled d-flex justify-content-end mr-2 gap-2" -->
-
-                    @auth
-                        <li class="">
-                            <a id="navbarDropdown" class="" href="#" role="button"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }}
-                            </a>
-
-                            <div class="mt-2 w-48 bg-white border rounded-md shadow-lg" aria-labelledby="navbarDropdown">
-                                <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" href="{{ route('logout') }}"
-                                    onclick="
-                                        event.preventDefault();
-                                        document.getElementById('logout-form').submit();
-                                ">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-                                    @csrf
-                                </form>
-                            </div>
-                        </li>
-
-                    @else
-                        <li class="">
-                            <a class="" href="{{ route('register') }}">Register</a>
-                        </li>
-                        <li class="">
-                            <a class="" href="{{ route('login') }}">Login</a>
-                        </li>
-                    @endauth
-                </ul>
+                <!-- Navigation Links -->
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
+                        {{ __('Home') }}
+                    </x-nav-link>
+                </div>
             </div>
+
+            @auth
+                <!-- Settings Dropdown -->
+                <div class="hidden sm:ms-6 sm:flex sm:items-center">
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button
+                                class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300">
+                                <div>{{ Auth::user()->name }}</div>
+
+                                <div class="ms-1">
+                                    <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <x-dropdown-link :href="route('profile.edit')">
+                                {{ __('Profile') }}
+                            </x-dropdown-link>
+
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+
+                                <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form>
+                        </x-slot>
+                    </x-dropdown>
+                </div>
+
+            @else
+                @if (Route::has('login'))
+                    <div class="z-10 p-6 text-right sm:fixed sm:right-0 sm:top-0">
+                        <a href="{{ route('login') }}"
+                            class="font-semibold text-gray-600 hover:text-gray-900 focus:rounded-sm focus:outline focus:outline-2 focus:outline-red-500 dark:text-gray-400 dark:hover:text-white">Log
+                            in</a>
+
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}"
+                                class="ml-4 font-semibold text-gray-600 hover:text-gray-900 focus:rounded-sm focus:outline focus:outline-2 focus:outline-red-500 dark:text-gray-400 dark:hover:text-white">Register</a>
+                        @endif
+                    </div>
+                @endif
+            @endauth
         </div>
-    </nav>
+
+    </div>
+</nav>

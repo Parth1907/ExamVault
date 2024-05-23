@@ -21,9 +21,9 @@ use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 //     return view('welcome');
 // });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -43,18 +43,29 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function(){
     });
     Route::middleware('admin')->group(function() {
         Route::get('dashboard', [HomeController::class , 'index'])->name('dashboard');
-        Route::get('addSchool', [HomeController::class, 'showSchoolForm'])->name('showSchoolForm');
+        // Manage School routes
+        Route::get('manageSchool', [HomeController::class, 'showSchoolForm'])->name('showSchoolForm');
         Route::post('addSchool', [HomeController::class, 'storeSchool'])->name('storeSchool');
-        Route::get('addCourse', [HomeController::class, 'showCourseForm'])->name('showCourseForm');
+        Route::delete('school/{school}', [HomeController::class, 'deleteSchool'])->name('deleteSchool');
+        Route::get('school/{school}', [HomeController::class, 'editSchool'])->name('editSchool');
+        Route::put('school/{school}', [HomeController::class, 'updateSchool'])->name('updateSchool');
+        // Manage Course routes
+        Route::get('manageCourse', [HomeController::class, 'showCourseForm'])->name('showCourseForm');
         Route::post('addCourse', [HomeController::class, 'storeCourse'])->name('storeCourse');
-        Route::get('addBranch', [HomeController::class, 'showBranchForm'])->name('showBranchForm');
+        Route::delete('course/{course}', [HomeController::class, 'deleteCourse'])->name('deleteCourse');
+        // Manage Branch routes
+        Route::get('manageBranch', [HomeController::class, 'showBranchForm'])->name('showBranchForm');
+        Route::get('getCourses/{school}', [HomeController::class, 'getCourses']);
         Route::post('addBranch', [HomeController::class, 'storeBranch'])->name('storeBranch');
-        Route::get('addSubject', [HomeController::class, 'showSubjectForm'])->name('showSubjectForm');
+        // Manage Subjects routes
+        Route::get('manageSubject', [HomeController::class, 'showSubjectForm'])->name('showSubjectForm');
+        Route::get('getBranches/{course}', [HomeController::class, 'getBranches']);
+        Route::post('addSubject', [HomeController::class, 'storeSubject'])->name('storeSubject');
     });
 });
 
 Route::controller(NavigationController::class)->group(function () {
-    Route::get('/', 'index');
+    Route::get('/', 'index')->name('home');
     Route::get('/{school}', 'courses');
     Route::get('/{school}/{course}', 'branches');
     Route::get('/{school}/{course}/{branch}','semesters');
